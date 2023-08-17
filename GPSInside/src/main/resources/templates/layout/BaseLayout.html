@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Prologue</title>
+    <meta charset="utf-8">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600" rel="stylesheet" type="text/css">
+    <!--[if lte IE 8]>
+    <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/skel.min.js}"></script>
+    <script th:src="@{/js/skel-panels.min.js}"></script>
+    <script th:src="@{/js/init.js}"></script>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/css/skel-noscript.css}">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/style-wide.css}">
+    </noscript>
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/css/ie9.css">
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="/css/ie8.css">
+    <![endif]-->
+</head>
+<body>
+<th:block th:replace="~{layout/LeftTagPage::LeftTagCustom}" />
+<div id="content">
+    <th:block layout:fragment="content"></th:block>
+</div>
+<th:block th:replace="~{layout/FooterPage::FooterCus}" />
+</body>
+</html>

@@ -1,5 +1,7 @@
 package ugps.myweb.gpsinside.Configuration;
 
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -21,4 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/").setCachePeriod(20);
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/").setCachePeriod(20);
     }
+
+
 }
