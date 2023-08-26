@@ -12,7 +12,7 @@
                 <li><a href="#about" id="about-link" class="skel-panels-ignoreHref"><span class="icon icon-user">About Me</span></a></li>
                 <li><a href="#contact" id="contact-link" class="skel-panels-ignoreHref"><span class="icon icon-envelope">Contact</span></a></li>
                 <hr>
-                <li><a th:href="@{/ba}" id="board-link" class="skel-panels-ignoreHref"><span class="icon icon-home">게시판</span></a></li>
+                <li><a th:onclick="|location.href='@{/ba}'|" id="board-link"><span class="icon icon-home">게시판</span></a></li>
             </ul>
         </nav>
     </div>
