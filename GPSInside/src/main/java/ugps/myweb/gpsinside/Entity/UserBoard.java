@@ -10,12 +10,11 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name="board_table")
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"user"})
 @Getter
-@Setter
 public class UserBoard extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bno;
@@ -27,8 +26,11 @@ public class UserBoard extends BaseEntity{
     @NotBlank
     private String writer;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_info")
     private RegistedUser user;
+
+
 
 }
