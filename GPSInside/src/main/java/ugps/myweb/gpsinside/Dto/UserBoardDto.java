@@ -2,21 +2,88 @@ package ugps.myweb.gpsinside.Dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import ugps.myweb.gpsinside.Entity.RegistedUser;
+import ugps.myweb.gpsinside.Entity.UserBoard;
 
-@Data
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+/**
+ * Domain 설명
+ * <pre>
+ *  boardIdx         not null        Long
+ *  writer      not null        varchar
+ *  userEmail   not null        varchar
+ *  password    not null        varchar
+ *
+ *  title       not null        varchar(25)
+ *  content    texttype
+ *
+ *  regDatetime                 Date
+ *  modDatetime                 Date
+ * </pre>
+ */
+
+
+@Getter
 public class UserBoardDto {
     private Long boardIdx;
+    private String writer;
+    private String userEmail;
+    private String password;
     private String title;
-    private String username;
+    private String content;
+
     private String regDatetime;
     private String modDateTime;
 
     @Builder
-    public UserBoardDto(Long boardIdx, String title, String username, String regDatetime, String modDateTime) {
+    public UserBoardDto(Long boardIdx, String writer, String userEmail, String password, String title, String content, String regDatetime, String modDateTime) {
         this.boardIdx = boardIdx;
+        this.writer = writer;
+        this.userEmail = userEmail;
+        this.password = password;
         this.title = title;
-        this.username = username;
+        this.content = content;
         this.regDatetime = regDatetime;
         this.modDateTime = modDateTime;
+    }
+
+
+
+
+    public UserBoard toUserBoard(){
+        RegistedUser user = RegistedUser.builder()
+                .email(userEmail)
+                .name(writer)
+                .password(password)
+                .build();
+
+        UserBoard userBoard =  UserBoard.builder()
+                .bno(boardIdx)
+                .title(title)
+                .content(content)
+//                .regDate(LocalDateTime.parse(this.regDatetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+        userBoard.setUser(user);
+        return userBoard;
+    }
+
+    public void updateTitle(String title) { this.title = title; }
+    public void updateContent(String content) { this.content = content; }
+    @Override
+    public String toString() {
+        return "UserBoardDto{" +
+                "boardIdx=" + boardIdx +
+                ", writer='" + writer + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", password='" + password + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", regDatetime='" + regDatetime + '\'' +
+                ", modDateTime='" + modDateTime + '\'' +
+                '}';
     }
 }

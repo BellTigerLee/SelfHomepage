@@ -8,3 +8,8 @@
 2.  유저 CRUD 기능.
     유저
         -100개 유저 입력 성공
+
+    유저부터 Create 기능 -> Board create기능 추가하기. 되도록이면 생성자 DI로 구현하기!
+    create regdate 문제발생. update와 create 자동서비스 호환이 안되는 문제 해결하기.
+    11/sep/23 Board 의 CRUD 기능 완료
+        다음작업은 User CRUD 및 user 삭제 시 cascade 되는지 확인

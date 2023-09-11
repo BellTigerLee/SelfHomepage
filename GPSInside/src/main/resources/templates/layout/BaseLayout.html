@@ -10,10 +10,11 @@
     <![endif]-->
 <!--    <script th:src="@{/js/jquery.min.js}"></script>-->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
     <script th:src="@{/js/skel.min.js}"></script>
     <script th:src="@{/js/skel-panels.min.js}"></script>
     <script th:src="@{/js/init.js}"></script>
-    <script th:src="@{/js/base-mani.js}" ></script>
+    <script th:src="@{/js/Boards/BoardsController.js}" ></script>
     <noscript>
         <link rel="stylesheet" th:href="@{/css/skel-noscript.css}">
         <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -25,6 +26,7 @@
     <!--[if lte IE 8]>
     <link rel="stylesheet" href="/css/ie8.css">
     <![endif]-->
+
 </head>
 <body>
 <th:block th:replace="~{layout/LeftTagPage::LeftTagCustom}" />

@@ -1,0 +1,39 @@
+server:
+  servlet:
+    encoding:
+      force: 'true'
+      enabled: 'true'
+      charset: UTF-8
+    context-path: /
+  port: '5555'
+
+spring:
+  thymeleaf:
+    cache: 'false'
+    prefix: classpath:/templates/
+    check-template-location: 'true'
+    suffix: .html
+  profiles:
+    active: dev
+  datasource:
+    password: testuser
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: testuser
+    url: jdbc:mariadb://localhost:3307/boottest
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: 'true'
+  devtools:
+    livereload:
+      enabled: 'true'
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+

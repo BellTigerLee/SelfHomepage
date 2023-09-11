@@ -16,7 +16,7 @@ import java.util.List;
 
 public class HPController {
 
-    private static final Logger log = LoggerFactory.getLogger(HPController.class);
+    private final Logger log = LoggerFactory.getLogger(HPController.class);
 
     @GetMapping(value = "/home")
     public String goToHomepageRoot(){
@@ -24,17 +24,12 @@ public class HPController {
     }
     @GetMapping(value={"/"})
     public String goToHomepage(){
+        log.info("Homepage가 요청되었습니다!");
+        log.info("Homepage를 반환합니다!");
         return "pages/MainPage";
     }
 
-    @GetMapping(value={"/ba"})
-    public String goToBoardPage(Model model){
-        List<UserBoard> relation = new ArrayList<>();
-        model.addAttribute("relation", relation);
-        log.debug("Model {}", model);
-        log.debug("localhost:5555/ba is called!");
-        return "pages/BoardPage";
-    }
+
 
 
 }

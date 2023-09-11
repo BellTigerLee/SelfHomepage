@@ -17,32 +17,27 @@ class TestEntityTest {
     @Autowired
     UserRepository userRepository;
 
-
-    @Test
-    @Transactional
-    void initialized(){
-        for(int i=1;i<=100;++i){
-            UserBoard board = UserBoard.builder()
-                    .title("test title"+i)
-                    .writer("aaa"+i+"@t.com")
-                    .build();
-            System.out.println("Board 생성!!");
-            boardRepository.save(board);
-            System.out.println("Board 저장!");
-            RegistedUser user = RegistedUser.builder()
-                    .email("aaa"+i+"@t.com")
-                    .name("aaa"+i)
-                    .build();
-            user.addBoard(board);
-            System.out.println("Board 를 User에 저장!");
-            userRepository.save(user);
-            System.out.println("User를 저장!");
-        }
-
-
-
-
-
-    }
+//
+//    @Test
+//    @Transactional
+//    void initialized(){
+//        for(int i=1;i<=100;++i){
+//            UserBoard board = UserBoard.builder()
+//                    .title("test title"+i)
+//                    .writer("aaa"+i+"@t.com")
+//                    .build();
+//            System.out.println("Board 생성!!");
+//            boardRepository.save(board);
+//            System.out.println("Board 저장!");
+//            RegistedUser user = RegistedUser.builder()
+//                    .email("aaa"+i+"@t.com")
+//                    .name("aaa"+i)
+//                    .build();
+//            user.addBoard(board);
+//            System.out.println("Board 를 User에 저장!");
+//            userRepository.save(user);
+//            System.out.println("User를 저장!");
+//        }
+//    }
 
 }

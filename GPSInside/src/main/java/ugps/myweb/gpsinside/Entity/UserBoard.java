@@ -6,11 +6,22 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * <pre>
+ * Domain 설명
+ *  bno         not null        Long
+ *  title       not null        varchar(25)
+ *  content                     varchar(2000)
+ *  user        not null        REGISTED USER
+ *  regDate                     Date
+ *  modDate                     Date
+ *  </pre>
+ */
 
 @Entity
 @Table(name="board_table")
 @SuperBuilder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @ToString(exclude = {"user"})
 @Getter
 public class UserBoard extends BaseEntity{
@@ -23,13 +34,31 @@ public class UserBoard extends BaseEntity{
     @Column(length = 25, nullable = false)
     private String title;
 
-    @NotBlank
-    private String writer;
+    @Column(length=2000)
+    private String content;
 
-    @Setter
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_info")
     private RegistedUser user;
+
+
+
+
+    public void setUser(RegistedUser _user){
+        if(this.user == null) this.user = _user;
+        _user.addBoard(this);
+    }
+
+    public void updateBoard(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
 
 
 
