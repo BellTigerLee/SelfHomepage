@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.Transactional;
+import ugps.myweb.gpsinside.Dto.PageRequestDto;
+import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
 import ugps.myweb.gpsinside.Entity.RegistedUser;
+import ugps.myweb.gpsinside.Entity.UserBoard;
 import ugps.myweb.gpsinside.Repository.BoardRepository;
 import ugps.myweb.gpsinside.Repository.UserRepository;
 import ugps.myweb.gpsinside.Service.BoardService;
@@ -79,6 +82,15 @@ class GpsInsideApplicationTests {
 		System.out.println("삭제 된 ID : "+rid);
 	}
 
+	@Test
+	@Transactional
+	void getBoardListTest() {
+		PageRequestDto requestDto = new PageRequestDto(11);
+		PageResponseDto<UserBoardDto, UserBoard> responseDto = boardService.getBoardList(requestDto);
+		System.out.println(responseDto.toString());
+		for(UserBoardDto dto : responseDto.getContent())
+			System.out.println(dto);
+	}
 
 	/*
 	@Test

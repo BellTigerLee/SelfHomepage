@@ -1,6 +1,8 @@
 package ugps.myweb.gpsinside.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ugps.myweb.gpsinside.Dto.PageRequestDto;
+import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
 import ugps.myweb.gpsinside.Entity.RegistedUser;
 import ugps.myweb.gpsinside.Entity.UserBoard;
@@ -9,8 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public interface BoardService {
-    List<UserBoardDto> getBoardList();
+//    List<UserBoardDto> getBoardList();
 
+    PageResponseDto<UserBoardDto, UserBoard>  getBoardList(PageRequestDto request);
     Long createBoard(UserBoardDto dto);
 
     @Transactional
@@ -25,8 +28,10 @@ public interface BoardService {
         return UserBoardDto.builder()
                 .boardIdx(board.getBno())
                 .title(board.getTitle())
-//                .writer(board.getWriter())
+                .writer(board.getUser().getName())
+                .password(board.getUser().getPassword())
                 .userEmail(board.getUser().getEmail())
+                .content(board.getContent())
                 .regDatetime(board.getRegDate().format(DateTimeFormatter.ofPattern(date_form)))
                 .modDateTime(board.getModDate().format(DateTimeFormatter.ofPattern(date_form)))
                 .build();

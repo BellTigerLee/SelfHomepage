@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import ugps.myweb.gpsinside.Dto.PageRequestDto;
+import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
 import ugps.myweb.gpsinside.Entity.UserBoard;
 import ugps.myweb.gpsinside.Service.BoardService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //게시판을 위한 컨트롤러
@@ -30,17 +31,19 @@ public class BoardsController {
 
     @ResponseBody
     @GetMapping(value={"/boards/{page}"})
-    public List<UserBoardDto> goToBoardPage(Model model, @PathVariable(value = "page", required = false) Integer page){
-        if(page == null) page = 1;
-        List<UserBoardDto> relation = boardService.getBoardList();
+    public PageResponseDto goToBoardPage(Model model, @PathVariable(value = "page", required = false) Integer page){
+        PageRequestDto requestDto = new PageRequestDto(page);
+        PageResponseDto<UserBoardDto, UserBoard> relation = boardService.getBoardList(requestDto);
         model.addAttribute("relation", relation);
-        for(UserBoardDto board : relation)
+        for(UserBoardDto board : relation.getContent())
             log.info(board.toString());
         log.info("Boards 가 요청되었습니다.");
         log.info(relation.toString());
 
         return relation;
     }
+
+
 
 
     public BoardsController(BoardService boardService) {

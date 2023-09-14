@@ -65,7 +65,6 @@ public class UserBoardDto {
                 .bno(boardIdx)
                 .title(title)
                 .content(content)
-//                .regDate(LocalDateTime.parse(this.regDatetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
         userBoard.setUser(user);
         return userBoard;
@@ -77,9 +76,9 @@ public class UserBoardDto {
     public String toString() {
         return "UserBoardDto{" +
                 "boardIdx=" + boardIdx +
-                ", writer='" + writer + '\'' +
+                ", writer='" + this.writer + '\'' +
                 ", userEmail='" + userEmail + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + this.password + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", regDatetime='" + regDatetime + '\'' +

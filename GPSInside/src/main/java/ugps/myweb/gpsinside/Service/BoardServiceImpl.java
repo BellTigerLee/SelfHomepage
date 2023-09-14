@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ugps.myweb.gpsinside.Dto.PageRequestDto;
+import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
 import ugps.myweb.gpsinside.Entity.RegistedUser;
 import ugps.myweb.gpsinside.Entity.UserBoard;
@@ -20,13 +22,19 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    @Override
-    public List<UserBoardDto> getBoardList() {
-        Pageable sortedByBno = PageRequest.of(0, 10, Sort.by("bno").descending());
-        Page<UserBoard> page = boardRepository.findAll(sortedByBno);
-        List<UserBoardDto> dtoPage = page.get().map(function).toList();
+//    @Override
+//    public List<UserBoardDto> getBoardList() {
+//        Pageable sortedByBno = PageRequest.of(0, 10, Sort.by("bno").descending());
+//        Page<UserBoard> page = boardRepository.findAll(sortedByBno);
+//        List<UserBoardDto> dtoPage = page.get().map(function).toList();
+//
+//        return dtoPage;
+//    }
 
-        return dtoPage;
+    @Override
+    public PageResponseDto<UserBoardDto, UserBoard> getBoardList(PageRequestDto request) {
+        Page<UserBoard> daoList = boardRepository.findAll(request.getPageable(Sort.by("bno").descending()));
+        return new PageResponseDto<>(daoList, function);
     }
 
     @Override
