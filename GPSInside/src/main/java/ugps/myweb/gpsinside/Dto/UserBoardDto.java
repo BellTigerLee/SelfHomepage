@@ -36,7 +36,7 @@ public class UserBoardDto {
     private String title;
     private String content;
 
-    private String regDatetime;
+    private String regDateTime;
     private String modDateTime;
 
     @Builder
@@ -47,7 +47,7 @@ public class UserBoardDto {
         this.password = password;
         this.title = title;
         this.content = content;
-        this.regDatetime = regDatetime;
+        this.regDateTime = regDatetime;
         this.modDateTime = modDateTime;
     }
 
@@ -81,7 +81,7 @@ public class UserBoardDto {
                 ", password='" + this.password + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", regDatetime='" + regDatetime + '\'' +
+                ", regDatetime='" + regDateTime + '\'' +
                 ", modDateTime='" + modDateTime + '\'' +
                 '}';
     }

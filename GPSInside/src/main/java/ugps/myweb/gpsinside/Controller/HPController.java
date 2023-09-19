@@ -13,16 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-
 public class HPController {
 
     private final Logger log = LoggerFactory.getLogger(HPController.class);
 
-    @GetMapping(value = "/home")
-    public String goToHomepageRoot(){
-        return "redirect:/";
-    }
-    @GetMapping(value={"/"})
+    @GetMapping(value={"/home"})
     public String goToHomepage(){
         log.info("Homepage가 요청되었습니다!");
         log.info("Homepage를 반환합니다!");

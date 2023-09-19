@@ -9,9 +9,9 @@ public class PageRequestDto {
     private int page;
     private int size;
 
-    public PageRequestDto(int page) {
+    public PageRequestDto(int page, int size) {
         this.page = page;
-        this.size = 5;
+        this.size = size;
     }
 
     public Pageable getPageable(Sort sort) {

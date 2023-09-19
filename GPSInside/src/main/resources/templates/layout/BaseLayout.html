@@ -1,40 +1,45 @@
 <!DOCTYPE HTML>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
+
+<head th:fragment="head">
     <title>Prologue</title>
     <meta charset="utf-8">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600" rel="stylesheet" type="text/css">
     <!--[if lte IE 8]>
     <script th:src="@{/js/html5shiv.js}"></script>
     <![endif]-->
-<!--    <script th:src="@{/js/jquery.min.js}"></script>-->
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script th:src="@{http://code.jquery.com/jquery-latest.min.js}"></script>
 
     <script th:src="@{/js/skel.min.js}"></script>
     <script th:src="@{/js/skel-panels.min.js}"></script>
     <script th:src="@{/js/init.js}"></script>
-    <script th:src="@{/js/Boards/BoardsController.js}" ></script>
-    <noscript>
-        <link rel="stylesheet" th:href="@{/css/skel-noscript.css}">
-        <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/style-wide.css}">
-    </noscript>
+    <!--    <script th:src="@{/js/Boards/BoardsController.js}" ></script>-->
+<!--    <noscript>-->
+        <link rel="stylesheet" th:href="@{/css/skel-noscript.css}" type="text/css">
+        <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+        <link rel="stylesheet" th:href="@{/css/style-wide.css}" type="text/css">
+<!--    </noscript>-->
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/css/ie9.css">
+
+    <link rel="stylesheet" th:href="@{/css/ie9.css}">
     <![endif]-->
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="/css/ie8.css">
+    <link rel="stylesheet" th:href="@{/css/ie8.css}">
     <![endif]-->
-
+    <th:block layout:fragment="script"></th:block>
+    <th:block layout:fragment="css"></th:block>
 </head>
+
 <body>
-<th:block th:replace="~{layout/LeftTagPage::LeftTagCustom}" />
+<div th:replace="~{layout/LeftTagPage::LeftTagCustom}" ></div>
+
 <div id="content">
     <div id="main">
-        <th:block layout:fragment="content"></th:block>
+        <th:block layout:fragment="contents"></th:block>
     </div>
 </div>
-<th:block th:replace="~{layout/FooterPage::FooterCus}" />
+<div th:replace="~{layout/FooterPage::FooterCus}" ></div>
 </body>
 </html>

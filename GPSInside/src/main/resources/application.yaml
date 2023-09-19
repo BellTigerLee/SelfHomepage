@@ -11,8 +11,8 @@ spring:
   thymeleaf:
     cache: 'false'
     prefix: classpath:/templates/
-    check-template-location: 'true'
     suffix: .html
+    check-template-location: 'true'
   profiles:
     active: dev
   datasource:

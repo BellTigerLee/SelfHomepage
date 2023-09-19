@@ -85,11 +85,12 @@ class GpsInsideApplicationTests {
 	@Test
 	@Transactional
 	void getBoardListTest() {
-		PageRequestDto requestDto = new PageRequestDto(11);
+		PageRequestDto requestDto = new PageRequestDto(1, 5);
 		PageResponseDto<UserBoardDto, UserBoard> responseDto = boardService.getBoardList(requestDto);
 		System.out.println(responseDto.toString());
 		for(UserBoardDto dto : responseDto.getContent())
 			System.out.println(dto);
+		System.out.println("테스트 끝!");
 	}
 
 	/*
