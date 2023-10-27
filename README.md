@@ -13,3 +13,9 @@
 
 ## add date...
 
+
+
+
+* javascript는 fetch API를 사용하자.
+* ES6문법을 준수하자.
+* async/promise를 잘 활용하자
