@@ -1,7 +1,18 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/BaseLayout}" layout:fragment="content">
+      layout:decorate="~{layout/BaseLayout}">
 
+<head>
+    <title>게시판입니다</title>
+</head>
+
+<th:block layout:fragment="contents">
+<script th:inline="javascript">
+    console.log([[${relation.content}]])
+</script>
+    <h1>헬로우</h1>
     <table>
         <tr>
             <th>#</th>
@@ -11,15 +22,14 @@
             <th>Date modified</th>
         </tr>
 
-        <tr th:if="${relation.isEmpty()}">
-            <td colspan="5">글이 존재하지 않습니다.</td>
-        </tr>
-        <tr th:if="!${relation.isEmpty()}" th:each="instance : ${relation}">
-            <td th:text="${instance.bno}">번호</td>
-            <td th:text="${instance.title}">제목</td>
-            <td th:text="${instance.writer}">작성자</td>
-            <td th:text="${#temporals.format(instance.regDate, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
-            <td th:text="${#temporals.format(instance.modDate, 'yyyy-MM-dd HH:mm:ss')}">수정일</td>
+        <tr th:each="inst : ${relation.content}">
+            <td th:text="${inst.boardIdx}">번호</td>
+            <td><a th:href="@{/b/read(bno=${inst.boardIdx})}" th:text="${inst.title}"></a></td>
+            <td th:text="${inst.writer}">작성자</td>
+            <td th:text="${inst.regDateTime}">등록일</td>
+            <td th:text="${inst.modDateTime}">수정일</td>
         </tr>
     </table>
+</th:block>
+
 </html>

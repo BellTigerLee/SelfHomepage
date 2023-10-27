@@ -1,31 +1,59 @@
 package ugps.myweb.gpsinside.Entity;
 
 
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Data
 @MappedSuperclass
 @SuperBuilder
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
+
+    @CreatedDate
+    @Column(name="regdate", updatable = false)
     private LocalDateTime regDate;
+    @LastModifiedDate
     private LocalDateTime modDate;
 
-    @PrePersist
-    public void prePersist(){
-        this.regDate = LocalDateTime.now();
-        this.modDate = this.regDate;
+    @JsonIgnore
+    public String getFormmedRegDate(){
+        return transDateByString(regDate);
+    }
+    @JsonIgnore
+    public String getFormmedModDate() {
+        return transDateByString(modDate);
     }
 
-    @PreUpdate
-    public void preUpdate(){
-        this.modDate = LocalDateTime.now();
+    public LocalDateTime getRegDate() {
+        return regDate;
     }
+
+    public LocalDateTime getModDate() {
+        return modDate;
+    }
+
+
+    private String transDateByString(LocalDateTime _date) {
+        if(_date == null) return "";
+        return _date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+//    @PrePersist
+//    public void prePersist(){
+//        this.regDate = LocalDateTime.now();
+//        this.modDate = this.regDate;
+//    }
+//    @PreUpdate
+//    public void preUpdate(){
+//        this.modDate = LocalDateTime.now();
+//    }
 }
