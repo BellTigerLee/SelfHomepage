@@ -26,18 +26,14 @@ public class BoardsController {
     private final BoardService boardService;
 
 
-    @GetMapping(value = {"", "/main", "/main/{page}"})
-    public String goToDefaultBoardPage(@PathVariable(value="page", required = false) Optional<Integer> page) {
-        return "redirect:/b/main/"+page.orElse(1)+"/10";
-    }
-
-    @GetMapping(value={"/main/{page}/{size}"})
+    @GetMapping(value={"", "/main"})
     public String goToBoardPage(Model model,
-                                @PathVariable(value = "page", required = false) Optional<Integer> ipage,
-                                @PathVariable(value = "size", required = false) Optional<Integer> isize){
-        PageRequestDto requestDto = new PageRequestDto(ipage.orElse(1), isize.orElse(10));
+                                @RequestParam(value = "page", required = false) Optional<Integer> ipage,
+                                @RequestParam(value = "size", required = false) Optional<Integer> isize){
+        PageRequestDto requestDto = new PageRequestDto(ipage.orElse(1), isize.orElse(5));
         PageResponseDto<UserBoardDto, UserBoard> relation = boardService.getBoardList(requestDto);
 
+        System.out.println(relation.toString());
         model.addAttribute("relation", relation);
         for(UserBoardDto board : relation.getContent())
             log.info(board.toString());
@@ -47,7 +43,10 @@ public class BoardsController {
         return "pages/BoardPage";
     }
 
+    @GetMapping(value={"/read"})
+    public String readBoard_View(Model model) {
 
+    }
 
 
     public BoardsController(BoardService boardService) {

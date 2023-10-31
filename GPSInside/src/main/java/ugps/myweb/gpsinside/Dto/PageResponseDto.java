@@ -65,8 +65,8 @@ public class PageResponseDto<DTO, EN> {
                 "start : " + start + ", end : " + end + '\n' +
                 "page : " + page + '\n' +
                 "size : " + size + '\n' +
-                "Elements : " + totalElements + '\n' +
-                "Pages : " + totalPages + '\n' +
+                "totalElements : " + totalElements + '\n' +
+                "totalPages : " + totalPages + '\n' +
                 "Prev : " + prev + '\n' +
                 "Last : " + last + '\n' +
                 "------------------\n";

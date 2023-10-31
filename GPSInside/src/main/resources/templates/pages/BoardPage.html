@@ -30,6 +30,13 @@
             <td th:text="${inst.modDateTime}">수정일</td>
         </tr>
     </table>
+
+    <div th:if="${relation.totalPages > 0}" th:each="pageNum : ${relation.pageList}"
+        class="pagination flex-content  ">
+            <a th:href="@{/b/main(page = ${pageNum},size = ${relation.size})}"
+                   th:text="${pageNum}" th:class="${pageNum == relation.page} ? active"></a>
+
+    </div>
 </th:block>
 
 </html>
