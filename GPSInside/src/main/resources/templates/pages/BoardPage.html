@@ -6,6 +6,7 @@
 
 <head>
     <title>게시판입니다</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <th:block layout:fragment="contents">
@@ -13,6 +14,7 @@
     console.log([[${relation.content}]])
 </script>
     <h1>헬로우</h1>
+    <button class="btn btn-secondary btn-lg" th:onclick="|location.href='@{/b/post}'|" type="button">글 쓰기</button>
     <table>
         <tr>
             <th>#</th>
@@ -31,12 +33,23 @@
         </tr>
     </table>
 
-    <div th:if="${relation.totalPages > 0}" th:each="pageNum : ${relation.pageList}"
-        class="pagination flex-content  ">
-            <a th:href="@{/b/main(page = ${pageNum},size = ${relation.size})}"
-                   th:text="${pageNum}" th:class="${pageNum == relation.page} ? active"></a>
+    <nav aria-label="Pagination" th:if="${relation.totalPages > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a th:href="@{/b/main(page=${relation.start - 10}, size=${relation.size})}" th:text="prev"></a>
+            </li>
 
-    </div>
+            <li class="page-item" th:each="pageNum : ${relation.pageList}">
+                <a th:href="@{/b/main(page = ${pageNum},size = ${relation.size})}"
+                   th:text="${pageNum}" th:class="${pageNum == relation.page} ? active"></a>
+            </li>
+
+            <li class="page-item" th:disabled="${relation.end == relation.totalPages} ? 'disabled'">
+                <a th:href="@{/b/main(page=${relation.end + 10}, size=${relation.size})}" th:text="next"></a>
+            </li>
+        </ul>
+    </nav>
+
 </th:block>
 
 </html>

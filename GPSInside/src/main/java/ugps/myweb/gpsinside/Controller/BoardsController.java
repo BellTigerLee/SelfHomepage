@@ -42,11 +42,24 @@ public class BoardsController {
 
         return "pages/BoardPage";
     }
+    /* C R U D 순서 */
 
-    @GetMapping(value={"/read"})
-    public String readBoard_View(Model model) {
-
+    @GetMapping(value = {"/post"})
+    public String createBoard(Model model) {
+        model.addAttribute("postDto", new UserBoardDto());
+        return "pages/PostPage";
     }
+
+
+    /**
+     * 게시판 Read 기능
+     * @param model
+     * @return read_board
+     */
+//    @GetMapping(value={"/read"})
+//    public String readBoard_View(Model model) {
+//
+//    }
 
 
     public BoardsController(BoardService boardService) {

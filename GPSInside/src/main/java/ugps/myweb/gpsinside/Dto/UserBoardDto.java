@@ -3,6 +3,7 @@ package ugps.myweb.gpsinside.Dto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ugps.myweb.gpsinside.Entity.RegistedUser;
 import ugps.myweb.gpsinside.Entity.UserBoard;
 
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter;
  */
 
 
+@NoArgsConstructor
 @Getter
 public class UserBoardDto {
     private Long boardIdx;
