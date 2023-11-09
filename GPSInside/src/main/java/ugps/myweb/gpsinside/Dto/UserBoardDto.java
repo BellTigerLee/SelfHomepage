@@ -25,12 +25,17 @@ import java.time.format.DateTimeFormatter;
  *  regDatetime                 Date
  *  modDatetime                 Date
  * </pre>
+ *
+ * 사용자가 직접 입력하는 부분
+ * {writer, userEmail, password}, title, content
+ * {variable...} 은 OAuth부분 추가하면서 자동적으로 로그인 된 유저의 정보를 읽어오도록 하자.
  */
 
 
-@NoArgsConstructor
+//@NoArgsConstructor
 @Getter
 public class UserBoardDto {
+    public UserBoardDto(){};
     private Long boardIdx;
     private String writer;
     private String userEmail;
@@ -86,5 +91,25 @@ public class UserBoardDto {
                 ", regDatetime='" + regDateTime + '\'' +
                 ", modDateTime='" + modDateTime + '\'' +
                 '}';
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -11,13 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public interface BoardService {
-//    List<UserBoardDto> getBoardList();
 
     PageResponseDto<UserBoardDto, UserBoard>  getBoardList(PageRequestDto request);
     Long createBoard(UserBoardDto dto);
 
     @Transactional
-    UserBoardDto selectBoard(Long bno, int page_num);
+    UserBoardDto selectBoard(Long bno);
 
     Long updateBoard(UserBoardDto updated);
 
@@ -37,20 +36,20 @@ public interface BoardService {
                 .build();
     }
 
-    default UserBoardDto daoToDto(UserBoard board, RegistedUser user){
-        String date_form = "yyyy-MM-dd HH:mm:ss";
-        return UserBoardDto.builder()
-                .boardIdx(board.getBno())
-                .writer(user.getName())
-                .userEmail(user.getEmail())
-                .password(user.getPassword())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .regDatetime(board.getFormmedRegDate())
-                .modDateTime(board.getFormmedModDate())
-                .build();
-
-    }
+//    default UserBoardDto daoToDto(UserBoard board, RegistedUser user){
+//        String date_form = "yyyy-MM-dd HH:mm:ss";
+//        return UserBoardDto.builder()
+//                .boardIdx(board.getBno())
+//                .writer(user.getName())
+//                .userEmail(user.getEmail())
+//                .password(user.getPassword())
+//                .title(board.getTitle())
+//                .content(board.getContent())
+//                .regDatetime(board.getFormmedRegDate())
+//                .modDateTime(board.getFormmedModDate())
+//                .build();
+//
+//    }
 
 
 }

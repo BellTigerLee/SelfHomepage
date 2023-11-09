@@ -45,14 +45,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public UserBoardDto selectBoard(Long bno, int page_num) {
+    public UserBoardDto selectBoard(Long bno) {
         UserBoard board = boardRepository.findById(bno).get();
         UserBoardDto ret_dto = null;
         if(board.getUser() == null){
             return null;
         }
         RegistedUser user = board.getUser();
-        ret_dto = daoToDto(board, user);
+        ret_dto = entityToDto(board);
         // 올바른 값이 맞는지 검사하는 코드 추가하기
         return ret_dto;
     }

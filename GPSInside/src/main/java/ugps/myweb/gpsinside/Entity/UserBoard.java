@@ -39,12 +39,9 @@ public class UserBoard extends BaseEntity{
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="user_info")
     private RegistedUser user;
-
-
-
 
     public void setUser(RegistedUser _user){
         if(this.user == null) this.user = _user;

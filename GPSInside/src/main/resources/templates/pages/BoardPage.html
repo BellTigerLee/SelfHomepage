@@ -12,9 +12,14 @@
 <th:block layout:fragment="contents">
 <script th:inline="javascript">
     console.log([[${relation.content}]])
+    console.log([[${relation.isPrev()}]], [[${relation.last}]])
+    let page_id = document.getElementById("page_id")
+    console.log(page_id)
 </script>
     <h1>헬로우</h1>
-    <button class="btn btn-secondary btn-lg" th:onclick="|location.href='@{/b/post}'|" type="button">글 쓰기</button>
+    <a th:href="@{/b/post}">
+        <button class="btn btn-outline-primary" type="button">글 등록</button>
+    </a>
     <table>
         <tr>
             <th>#</th>
@@ -26,7 +31,7 @@
 
         <tr th:each="inst : ${relation.content}">
             <td th:text="${inst.boardIdx}">번호</td>
-            <td><a th:href="@{/b/read(bno=${inst.boardIdx})}" th:text="${inst.title}"></a></td>
+            <td><a th:href="@{/b/read(bno=${inst.boardIdx}, page=${relation.page}, size=${relation.size})}" th:text="${inst.title}"></a></td>
             <td th:text="${inst.writer}">작성자</td>
             <td th:text="${inst.regDateTime}">등록일</td>
             <td th:text="${inst.modDateTime}">수정일</td>
@@ -35,7 +40,7 @@
 
     <nav aria-label="Pagination" th:if="${relation.totalPages > 0}">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
+            <li class="page-item" th:if="${relation.prev}">
                 <a th:href="@{/b/main(page=${relation.start - 10}, size=${relation.size})}" th:text="prev"></a>
             </li>
 
@@ -44,12 +49,13 @@
                    th:text="${pageNum}" th:class="${pageNum == relation.page} ? active"></a>
             </li>
 
-            <li class="page-item" th:disabled="${relation.end == relation.totalPages} ? 'disabled'">
-                <a th:href="@{/b/main(page=${relation.end + 10}, size=${relation.size})}" th:text="next"></a>
+            <li class="page-item" th:if="${relation.last}">
+                <a th:href="@{/b/main(page=${relation.end + 1}, size=${relation.size})}" th:text="next"></a>
             </li>
         </ul>
     </nav>
 
+    <input id="page_id" type="hidden" th:value="${page}">
 </th:block>
 
 </html>

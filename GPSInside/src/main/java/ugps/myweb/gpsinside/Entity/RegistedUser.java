@@ -14,7 +14,6 @@ import java.util.List;
 @Entity
 @Table(name = "user_table")
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @ToString(exclude = "boards")
@@ -37,6 +36,8 @@ public class RegistedUser extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserBoard> boards = new ArrayList<>();
+
+    public RegistedUser(){}
 
     public void addBoard(UserBoard board){
         if(!boards.contains(board))

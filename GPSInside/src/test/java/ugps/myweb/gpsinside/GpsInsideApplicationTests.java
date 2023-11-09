@@ -62,13 +62,13 @@ class GpsInsideApplicationTests {
 
 	@Test
 	void selectBoardTest1(){
-		UserBoardDto dto = boardService.selectBoard(1L, 1);
+		UserBoardDto dto = boardService.selectBoard(1L );
 		System.out.println(dto.toString());
 	}
 
 	@Test
 	void updateBoardTest1() {
-		UserBoardDto dto = boardService.selectBoard(1L, 1);
+		UserBoardDto dto = boardService.selectBoard(1L);
 		System.out.println(dto.toString());
 		dto.updateTitle("Update Title...!!!");
 		dto.updateContent("Update Content...!!!");
@@ -77,7 +77,7 @@ class GpsInsideApplicationTests {
 
 	@Test
 	void removeBoardTest1(){
-		UserBoardDto dto = boardService.selectBoard(1L, 1);
+		UserBoardDto dto = boardService.selectBoard(1L );
 		Long rid = boardService.removeBoard(dto);
 		System.out.println("삭제 된 ID : "+rid);
 	}

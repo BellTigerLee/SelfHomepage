@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
@@ -17,7 +18,7 @@ import java.util.Optional;
 //게시판을 위한 컨트롤러
 
 @Controller
-@RequestMapping(value = {"/b"}, method = RequestMethod.GET)
+//@RequestMapping(value = {"/b"}, method = RequestMethod.GET)
 public class BoardsController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -26,7 +27,7 @@ public class BoardsController {
     private final BoardService boardService;
 
 
-    @GetMapping(value={"", "/main"})
+    @GetMapping(value={"/b", "/b/main"})
     public String goToBoardPage(Model model,
                                 @RequestParam(value = "page", required = false) Optional<Integer> ipage,
                                 @RequestParam(value = "size", required = false) Optional<Integer> isize){
@@ -44,22 +45,36 @@ public class BoardsController {
     }
     /* C R U D 순서 */
 
-    @GetMapping(value = {"/post"})
+    @GetMapping(value = {"/b/post"})
     public String createBoard(Model model) {
         model.addAttribute("postDto", new UserBoardDto());
         return "pages/PostPage";
     }
 
 
+
+    @RequestMapping(value = {"/b/post"}, method = RequestMethod.POST)
+    public String post_createBoard(UserBoardDto postDto, RedirectAttributes attributes) {
+        System.out.println("*****************\n"+postDto);
+        Long nb = boardService.createBoard(postDto);
+        System.out.println("NUMBER IS "+nb);
+        attributes.addFlashAttribute("msg", nb);
+        return "redirect:/b/main";
+    }
+
     /**
      * 게시판 Read 기능
      * @param model
      * @return read_board
      */
-//    @GetMapping(value={"/read"})
-//    public String readBoard_View(Model model) {
-//
-//    }
+    @GetMapping(value={"/b/read"})
+    public String readBoard_View(@RequestParam("bno") Long req_bno, @ModelAttribute("requestDto") PageRequestDto requestDto,
+                                  Model model){
+        log.info("보드 "+req_bno+" 번을 조회합니다.");
+        UserBoardDto dto = boardService.selectBoard(req_bno);
+        model.addAttribute("dto", dto);
+        return "pages/ReadBoardPage";
+    }
 
 
     public BoardsController(BoardService boardService) {
@@ -67,3 +82,24 @@ public class BoardsController {
     }
 
 }
+
+
+/**
+ *==============================
+ *
+ * https://github.com/spring-projects/spring-framework/issues/18161
+ * 왜 루트 url를 삭제하였는지 이유.
+ * issue: ambiguous handler methods mapped for HTTP path
+ *
+ *==============================
+ *
+ * object references an unsaved transient instance
+ * FK연관관계로 저장해야 할 시 참조하고 있는 키 값을 모르는데 저장하려했을 때
+ * 생기는 오류. 나같은 경우 UserBoard의 Cascade.Persist를 빼주었기 때문에
+ * 저장이 ServiceImpl단에서 save 시 FK의 user_email의 값이 없어서 발생했음.
+ *
+ * Persist로 바꿔주니 해결됨(저장만 하려고 PERSIST사용함)
+ *
+ * ==============================
+ *
+ */
