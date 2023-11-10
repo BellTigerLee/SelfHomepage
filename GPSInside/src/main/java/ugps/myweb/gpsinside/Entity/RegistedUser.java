@@ -40,9 +40,11 @@ public class RegistedUser extends BaseEntity{
     public RegistedUser(){}
 
     public void addBoard(UserBoard board){
-        if(!boards.contains(board))
+        if(!boards.contains(board)){
             this.boards.add(board);
-        else throw new RuntimeException("Duplication board Error ");
+            return;
+        }
+        throw new RuntimeException("Duplication board Error ");
     }
 
 }
