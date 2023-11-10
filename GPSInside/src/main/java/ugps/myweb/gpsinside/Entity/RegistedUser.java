@@ -42,6 +42,7 @@ public class RegistedUser extends BaseEntity{
     public void addBoard(UserBoard board){
         if(!boards.contains(board)){
             this.boards.add(board);
+            System.out.println("해당 사용자의 Board가 추가되었습니다.");
             return;
         }
         throw new RuntimeException("Duplication board Error ");
