@@ -1,6 +1,9 @@
 package ugps.myweb.gpsinside.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.TransientPropertyValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,8 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
 //    @Override
 //    public List<UserBoardDto> getBoardList() {
 //        Pageable sortedByBno = PageRequest.of(0, 10, Sort.by("bno").descending());
@@ -40,8 +45,13 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public Long createBoard(UserBoardDto dto) {
         UserBoard board = dto.toUserBoard();
-        Long bno = boardRepository.save(board).getBno();
-        return bno;
+        try{
+            Long bno = boardRepository.save(board).getBno();
+            return bno;
+        }catch(TransientPropertyValueException nonUserInfo_coming){
+            log.info("존재하지 않는 사용자의 이름으로 글이 등록되었습니다.");
+            return null;
+        }
     }
 
     @Override
@@ -51,6 +61,7 @@ public class BoardServiceImpl implements BoardService{
         if(board.getUser() == null){
             return null;
         }
+
         RegistedUser user = board.getUser();
         ret_dto = entityToDto(board);
         // 올바른 값이 맞는지 검사하는 코드 추가하기

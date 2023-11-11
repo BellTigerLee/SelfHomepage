@@ -68,14 +68,32 @@ public class BoardsController {
      * @return read_board
      */
     @GetMapping(value={"/b/read"})
-    public String readBoard_View(@RequestParam("bno") Long req_bno, @ModelAttribute("requestDto") PageRequestDto requestDto,
-                                  Model model){
+    public String readBoard_View(@RequestParam("bno") Long req_bno,
+                                 @ModelAttribute("requestDto") PageRequestDto requestDto,
+                                 Model model){
         log.info("보드 "+req_bno+" 번을 조회합니다.");
         UserBoardDto dto = boardService.selectBoard(req_bno);
         model.addAttribute("dto", dto);
         return "pages/ReadBoardPage";
     }
 
+    @GetMapping(value = {"/b/update"})
+    public String updateBoard(@RequestParam("b") Long b,
+                              @ModelAttribute("requestDto") PageRequestDto requestDto,
+                              UserBoardDto dto,
+                              Model model) {
+
+        model.addAttribute("dto", boardService.selectBoard(b));
+        return "pages/UpdateBoardPage";
+    }
+
+    @PostMapping(value = {"/b/update"})
+    public String updateBoard_post(@RequestParam("b") Long b,
+
+                                   Model model
+                                   ) {
+
+    }
 
     public BoardsController(BoardService boardService) {
         this.boardService = boardService;
@@ -100,6 +118,8 @@ public class BoardsController {
  *
  * Persist로 바꿔주니 해결됨(저장만 하려고 PERSIST사용함)
  *
+ * 2차문제. 없는 ID를 넣고 게시물 저장 시 오류생김. UserBoard의 ALL을 없애버렸음.
+ * ERROR: 사용자 탈퇴(삭제) 시 모든 게시물 삭제만 고려하기 때문에 UsreBoard의(부모) Cascade는 없애버림.
  * ==============================
  *
  */

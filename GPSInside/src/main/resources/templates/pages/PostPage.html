@@ -11,12 +11,13 @@
 <th:block layout:fragment="contents">
     <div class="py-3 text-center">
         작성 폼 입니다.
+
     </div>
     <div class="container">
         <form th:action="@{/b/post}" method="post" th:object="${postDto}" class="form-control">
             <div>
                 <label for="writer" class="form-label">닉네임 : </label>
-                <input type="text" th:field="*{writer}" placeholder="닉네임을 입력하시오." class="form-text">
+                <input type="text" th:field="*{writer}" placeholder="닉네임을 입력하시오." class="form-text" >
             </div>
             <div>
                 <label for="userEmail" class="form-label">이메일:  </label>
@@ -33,12 +34,15 @@
             </div>
             <div>
                 <label for="content" class="form-label"></label>
-                <textarea th:field="*{content}" rows="12" cols="80">
-
-                </textarea>
+                <textarea th:field="*{content}" rows="12" cols="80"></textarea>
             </div>
 
-            <div><input type="submit" value="글 등록" class="btn btn-outline-primary"/></div>
+            <div>
+                <input type="submit" value="글 등록" class="btn btn-primary"/>
+                <a th:href="@{/b/main}">
+                    <button class="btn btn-outline-primary" type="button">돌아가기</button>
+                </a>
+            </div>
         </form>
     </div>
 </th:block>

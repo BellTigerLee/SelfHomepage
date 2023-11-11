@@ -33,8 +33,7 @@ public class RegistedUser extends BaseEntity{
     private String password;
 
     @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<UserBoard> boards = new ArrayList<>();
 
     public RegistedUser(){}

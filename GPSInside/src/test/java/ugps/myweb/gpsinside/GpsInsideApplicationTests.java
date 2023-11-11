@@ -37,6 +37,11 @@ class GpsInsideApplicationTests {
 	private BoardService boardService;
 
 	@Test
+	public void testTest(){
+		System.out.println("Hello Test!");
+	}
+
+	@Test
 	void initiateTest() {
 		for(int i=1;i<=100;++i) {
 			RegistedUser user = RegistedUser.builder()
@@ -49,12 +54,13 @@ class GpsInsideApplicationTests {
 		}
 		for(int i=1;i<=100;++i) {
 			UserBoardDto dto = UserBoardDto.builder()
-					.title("Title"+i)
 					.writer("aaa"+i)
-					.content("Content..."+i)
 					.userEmail("aaa"+i+"@t.com")
 					.password("password"+i)
+					.title("Title"+i)
+					.content("Content..."+i)
 					.build();
+
 			Long created = boardService.createBoard(dto);
 			System.out.println("Created board no is = " + created);
 		}
