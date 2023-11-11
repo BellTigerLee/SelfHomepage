@@ -112,4 +112,16 @@ public class UserBoardDto {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void setBoardIdx(Long boardIdx) {
+        this.boardIdx = boardIdx;
+    }
+
+    public void setRegDateTime(String regDateTime) {
+        this.regDateTime = regDateTime;
+    }
+
+    public void setModDateTime(String modDateTime) {
+        this.modDateTime = modDateTime;
+    }
 }

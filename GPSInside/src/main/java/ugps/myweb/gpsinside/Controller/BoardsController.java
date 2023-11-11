@@ -78,21 +78,39 @@ public class BoardsController {
     }
 
     @GetMapping(value = {"/b/update"})
-    public String updateBoard(@RequestParam("b") Long b,
+    public String updateBoard(@RequestParam("bno") Long bno,
                               @ModelAttribute("requestDto") PageRequestDto requestDto,
-                              UserBoardDto dto,
                               Model model) {
 
-        model.addAttribute("dto", boardService.selectBoard(b));
+        model.addAttribute("dto", boardService.selectBoard(bno));
         return "pages/UpdateBoardPage";
     }
 
     @PostMapping(value = {"/b/update"})
-    public String updateBoard_post(@RequestParam("b") Long b,
+    public String updateBoard_post(UserBoardDto dto,
+                                 RedirectAttributes attr) {
+        log.info("***Board Update요청이 왔습니다.");
+        Long ubno = boardService.updateBoard(dto);
+        System.out.println(dto);
+        attr.addFlashAttribute("msg", ubno);
+        return "redirect:/b/main";
+    }
 
-                                   Model model
-                                   ) {
 
+    /**
+     * 비효율 적인 코드.
+     * remove를 위해 select 한번 조회 후 삭제하는 방식임.
+     * 이거 반드시 고쳐야 할 필요가 있음.
+     * @param bno
+     * @param attr
+     * @return
+     */
+    @GetMapping(value = {"/b/delbrd"})
+    public String deleteBoardById(@RequestParam("bno") Long bno, RedirectAttributes attr) {
+        Long removed = boardService.removeBoard(boardService.selectBoard(bno));
+        attr.addFlashAttribute("msg", removed);
+        log.info(removed+"번 게시물이 삭제되었습니다.");
+        return "redirect:/b/main";
     }
 
     public BoardsController(BoardService boardService) {
