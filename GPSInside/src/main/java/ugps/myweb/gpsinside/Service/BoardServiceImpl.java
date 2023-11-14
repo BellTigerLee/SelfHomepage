@@ -18,6 +18,7 @@ import ugps.myweb.gpsinside.Repository.BoardRepository;
 import ugps.myweb.gpsinside.Repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -70,10 +71,16 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long updateBoard(UserBoardDto updated) {
-        System.out.println("Update 하는 시퀀스가 실행되었습니다.");
-        System.out.println("이제부터 업데이트를 진행합니다......");
-        System.out.println("...");
-        return createBoard(updated);
+        System.out.println("Update가 하는 시퀀스를 진행함.");
+        System.out.println(updated.getBoardIdx()+ "번 이제부터 업데이트를 진행함.");
+        Optional<UserBoard> result = boardRepository.findById(updated.getBoardIdx());
+        if(result.isPresent()) {
+            UserBoard board = result.get();
+            board.updateTitle(updated.getTitle());
+            board.updateContent(updated.getContent());
+            return boardRepository.save(board).getBno();
+        }
+        return -1L;
     }
 
     @Override

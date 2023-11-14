@@ -26,11 +26,11 @@
             </div>
             <div>
                 <label>글쓴 날짜: </label>
-                <input type="text" class="form-control" name="regDateTime" th:value="${dto.regDateTime}" readonly>
+                <input type="text" class="form-control" th:value="${dto.regDateTime}" readonly>
             </div>
             <div>
                 <label>수정 날짜: </label>
-                <input type="text" class="form-control" name="modDateTime" th:value="${dto.modDateTime}" readonly>
+                <input type="text" class="form-control" th:value="${dto.modDateTime}" readonly>
             </div>
             <div>
                 <label>제목 : </label>
@@ -39,29 +39,33 @@
             <div>
                 <textarea class="form-control" name="content" >[[${dto.content}]]</textarea>
             </div>
-            <input type="hidden" name="password" th:value="${dto.password}">
-            <a th:href="@{/b/main(page=${requestDto.page}, size=${requestDto.size})}" style="text-decoration: none">
-                <button class="btn btn-primary">돌아가기</button>
-            </a>
-            <input type="submit" value="글 수정" class="btn btn-outline-primary"/>
-            <button id="rmvBtn" type="button" onclick="deleteBoard()" class="btn btn-outline-secondary" >글 삭제</button>
+            <input type="hidden" name="password" th:value="${dto.password}" />
+            <input type="hidden" name="page" th:value="${requestDto.page}" />
+            <input type="hidden" name="size" th:value="${requestDto.size}" />
             <div id="rmvDiv"></div>
         </form>
+        <a th:href="@{/b/main(page=${requestDto.page}, size=${requestDto.size})}" style="text-decoration: none">
+            <button type="button" class="btn btn-primary">돌아가기</button>
+        </a>
+        <button id="updBtn" type="button" onclick="updateBoard()" class="btn btn-outline-primary" >글 수정</button>
+        <button id="rmvBtn" type="button" onclick="deleteBoard()" class="btn btn-outline-secondary" >글 삭제</button>
 
     </div>
     <script th:inline="javascript">
-        let rmvBtn = document.getElementById('rmvBtn')
+        let actForm = $('form');
+        function updateBoard(){
+            const bno = document.getElementById('bidx').value
+            if(!confirm(`${bno}를 수정하겠냐?`)){return false; };
+            actForm.attr('action', '/b/update')
+                .attr('method', 'post')
+                .submit();
+        }
         function deleteBoard(){
             const bno = document.getElementById('bidx').value
             if(!confirm(bno)) { return false; }
-            let url = '/b/delbrd';
-            let html = "";
-
-            html += `<form name='dataForm' id="dataForm" th:action='${url}' method="get">
-                <input type="hidden" name="bno" value='${bno}'/></form>`;
-            // console.log(html)
-            $("#rmvDiv").append(html);
-            document.getElementById('dataForm').submit();
+            actForm.attr('action', '/b/delbrd?bno='+bno)
+                .attr('method','post')
+            actForm.submit();
         }
     </script>
 </th:block>

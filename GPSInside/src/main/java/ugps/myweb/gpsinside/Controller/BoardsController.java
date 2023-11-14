@@ -105,8 +105,10 @@ public class BoardsController {
      * @param attr
      * @return
      */
-    @GetMapping(value = {"/b/delbrd"})
-    public String deleteBoardById(@RequestParam("bno") Long bno, RedirectAttributes attr) {
+    @PostMapping(value = {"/b/delbrd"})
+    public String deleteBoardById(@RequestParam("bno") Long bno,
+                                  RedirectAttributes attr) {
+        log.info("삭제 실행 : "+bno);
         Long removed = boardService.removeBoard(boardService.selectBoard(bno));
         attr.addFlashAttribute("msg", removed);
         log.info(removed+"번 게시물이 삭제되었습니다.");

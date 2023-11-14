@@ -48,7 +48,7 @@ public class UserBoard extends BaseEntity{
         _user.addBoard(this);
     }
 
-    public void updateBoard(String title) {
+    public void updateTitle(String title) {
         this.title = title;
     }
 
