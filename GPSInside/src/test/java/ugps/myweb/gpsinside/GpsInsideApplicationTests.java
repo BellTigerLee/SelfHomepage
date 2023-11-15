@@ -1,9 +1,13 @@
 package ugps.myweb.gpsinside;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
@@ -97,6 +101,20 @@ class GpsInsideApplicationTests {
 		for(UserBoardDto dto : responseDto.getContent())
 			System.out.println(dto);
 		System.out.println("테스트 끝!");
+	}
+
+	@Transactional(readOnly = true)
+	@Test
+	public void searchTest() {
+		PageRequestDto pageRequestDto = new PageRequestDto(1, 5);
+		//t, c, u
+		String tag = "tc";
+		String txt = "title";
+		PageResponseDto<UserBoardDto, UserBoard> boards = boardService.searchBoardWithCrit(tag, txt, pageRequestDto.getPageable(Sort.by("bno").descending()));
+		System.out.println(boards.getContent().size());
+		for(UserBoardDto dto : boards.getContent()) {
+			System.out.println(dto);
+		}
 	}
 
 	/*

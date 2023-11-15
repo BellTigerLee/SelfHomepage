@@ -1,13 +1,14 @@
 package ugps.myweb.gpsinside.Service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.TransientPropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
@@ -17,6 +18,7 @@ import ugps.myweb.gpsinside.Entity.UserBoard;
 import ugps.myweb.gpsinside.Repository.BoardRepository;
 import ugps.myweb.gpsinside.Repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,6 +27,9 @@ import java.util.function.Function;
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -91,6 +96,50 @@ public class BoardServiceImpl implements BoardService{
         if(board == null) throw new RuntimeException("Dto -> Entity 작업 과정에 문제가 생겼습니다.");
         boardRepository.deleteById(board.getBno());
         return board.getBno();
+    }
+
+
+    /**
+     *
+     * @param tag :
+     *  tag는 t:제목, c:내용, u: 작성자
+     * @param txt
+     *  검색어를 입력
+     * @return
+     */
+    @Override
+    public PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserBoard> cq = cb.createQuery(UserBoard.class);
+        Root<UserBoard> root = cq.from(UserBoard.class);
+        Join<UserBoard, RegistedUser> withUser = root.join("user");
+
+        List<Predicate> predicates = new ArrayList<>();
+        String rt = "%"+txt+"%";
+
+        String[] types = tag.split("");
+        for(String type : types) {
+            switch(type) {
+                case "t" :
+                    predicates.add(cb.like(root.get("title"), rt));
+                    break;
+                case "c":
+                    predicates.add(cb.like(root.get("content"), rt));
+                    break;
+                case "u":
+                    predicates.add(cb.equal(withUser.get("name"), rt));
+                    break;
+            }
+        }
+
+        cq.where(cb.or(predicates.toArray(new Predicate[0])));
+
+        TypedQuery<UserBoard> exec = entityManager.createQuery(cq);
+        List<UserBoard> _boards = exec.setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize()).getResultList();
+
+        Page<UserBoard> boards = new PageImpl<>(_boards, pageable, pageable.getOffset());
+        return new PageResponseDto<>(boards, function);
     }
 
 

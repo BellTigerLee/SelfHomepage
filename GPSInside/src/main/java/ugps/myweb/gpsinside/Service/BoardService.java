@@ -1,5 +1,7 @@
 package ugps.myweb.gpsinside.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
@@ -21,6 +23,8 @@ public interface BoardService {
     Long updateBoard(UserBoardDto updated);
 
     Long removeBoard(UserBoardDto removed);
+    
+    PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable);
 
     default UserBoardDto entityToDto(UserBoard board) {
         String date_form = "yyyy-MM-dd HH:mm:ss";

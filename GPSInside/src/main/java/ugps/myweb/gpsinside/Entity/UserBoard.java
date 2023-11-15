@@ -37,8 +37,6 @@ public class UserBoard extends BaseEntity{
     @Column(length=2000)
     private String content;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_info")
     private RegistedUser user;
