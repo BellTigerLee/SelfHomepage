@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
@@ -88,6 +89,7 @@ public class BoardServiceImpl implements BoardService{
         return -1L;
     }
 
+    @Transactional
     @Override
     public Long removeBoard(UserBoardDto removed) {
         System.out.println("Remove 하는 시퀀스 실행......");
@@ -103,11 +105,15 @@ public class BoardServiceImpl implements BoardService{
      *
      * @param tag :
      *  tag는 t:제목, c:내용, u: 작성자
-     * @param txt
+     *  types: tcu 저장
+     * @param txt 검색어
      *  검색어를 입력
+     * rt : 포함검색을 위한 %검색어%
+     *
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<UserBoard> cq = cb.createQuery(UserBoard.class);
@@ -127,13 +133,13 @@ public class BoardServiceImpl implements BoardService{
                     predicates.add(cb.like(root.get("content"), rt));
                     break;
                 case "u":
-                    predicates.add(cb.equal(withUser.get("name"), rt));
+                    predicates.add(cb.like(withUser.get("name"), rt));
                     break;
             }
         }
 
         cq.where(cb.or(predicates.toArray(new Predicate[0])));
-
+        cq.orderBy(cb.desc(root.get("bno")));
         TypedQuery<UserBoard> exec = entityManager.createQuery(cq);
         List<UserBoard> _boards = exec.setFirstResult((int)pageable.getOffset())
                 .setMaxResults(pageable.getPageSize()).getResultList();

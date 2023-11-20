@@ -95,7 +95,7 @@ class GpsInsideApplicationTests {
 	@Test
 	@Transactional
 	void getBoardListTest() {
-		PageRequestDto requestDto = new PageRequestDto(1, 5);
+		PageRequestDto requestDto = new PageRequestDto();
 		PageResponseDto<UserBoardDto, UserBoard> responseDto = boardService.getBoardList(requestDto);
 		System.out.println(responseDto.toString());
 		for(UserBoardDto dto : responseDto.getContent())
@@ -103,13 +103,13 @@ class GpsInsideApplicationTests {
 		System.out.println("테스트 끝!");
 	}
 
-	@Transactional(readOnly = true)
+//	@Transactional(readOnly = true)
 	@Test
 	public void searchTest() {
-		PageRequestDto pageRequestDto = new PageRequestDto(1, 5);
+		PageRequestDto pageRequestDto = new PageRequestDto();
 		//t, c, u
-		String tag = "tc";
-		String txt = "title";
+		String tag = "u";
+		String txt = "aaa1";
 		PageResponseDto<UserBoardDto, UserBoard> boards = boardService.searchBoardWithCrit(tag, txt, pageRequestDto.getPageable(Sort.by("bno").descending()));
 		System.out.println(boards.getContent().size());
 		for(UserBoardDto dto : boards.getContent()) {

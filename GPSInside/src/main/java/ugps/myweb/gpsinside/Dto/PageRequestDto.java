@@ -11,12 +11,30 @@ public class PageRequestDto {
     private int page;
     private int size;
 
-    public PageRequestDto(int page, int size) {
-        this.page = page;
-        this.size = size;
+    private String type; // t c u
+    private String keyword;
+    public PageRequestDto() {
+        this.page = 1;
+        this.size = 5;
     }
 
     public Pageable getPageable(Sort sort) {
         return PageRequest.of(page-1, size, sort);
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

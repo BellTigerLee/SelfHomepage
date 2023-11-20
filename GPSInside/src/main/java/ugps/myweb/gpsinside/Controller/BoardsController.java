@@ -29,12 +29,15 @@ public class BoardsController {
 
     @GetMapping(value={"/b", "/b/main"})
     public String goToBoardPage(Model model,
-                                @RequestParam(value = "page", required = false) Optional<Integer> ipage,
-                                @RequestParam(value = "size", required = false) Optional<Integer> isize){
-        PageRequestDto requestDto = new PageRequestDto(ipage.orElse(1), isize.orElse(5));
+                                @ModelAttribute("requestDto") PageRequestDto requestDto)
+//                                @RequestParam(value = "page", required = false) Optional<Integer> ipage,
+//                                @RequestParam(value = "size", required = false) Optional<Integer> isize)
+    {
+//        PageRequestDto requestDto = new PageRequestDto(ipage.orElse(1), isize.orElse(5));
         PageResponseDto<UserBoardDto, UserBoard> relation = boardService.getBoardList(requestDto);
 
         System.out.println(relation.toString());
+//        model.addAttribute("requestDto", requestDto);
         model.addAttribute("relation", relation);
         for(UserBoardDto board : relation.getContent())
             log.info(board.toString());
@@ -100,6 +103,7 @@ public class BoardsController {
     /**
      * 비효율 적인 코드.
      * remove를 위해 select 한번 조회 후 삭제하는 방식임.
+     * 해당 bno가 없을경우를 고려해봤음.
      * 이거 반드시 고쳐야 할 필요가 있음.
      * @param bno
      * @param attr
@@ -114,6 +118,8 @@ public class BoardsController {
         log.info(removed+"번 게시물이 삭제되었습니다.");
         return "redirect:/b/main";
     }
+
+
 
     public BoardsController(BoardService boardService) {
         this.boardService = boardService;
