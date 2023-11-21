@@ -45,77 +45,77 @@ class GpsInsideApplicationTests {
 		System.out.println("Hello Test!");
 	}
 
-	@Test
-	void initiateTest() {
-		for(int i=1;i<=100;++i) {
-			RegistedUser user = RegistedUser.builder()
-					.name("aaa"+i)
-					.email("aaa"+i+"@t.com")
-					.password("password"+i)
-					.boards(new ArrayList<>())
-					.build();
-			userRepository.save(user);
-		}
-		for(int i=1;i<=100;++i) {
-			UserBoardDto dto = UserBoardDto.builder()
-					.writer("aaa"+i)
-					.userEmail("aaa"+i+"@t.com")
-					.password("password"+i)
-					.title("Title"+i)
-					.content("Content..."+i)
-					.build();
+//	@Test
+//	void initiateTest() {
+//		for(int i=1;i<=100;++i) {
+//			RegistedUser user = RegistedUser.builder()
+//					.name("aaa"+i)
+//					.email("aaa"+i+"@t.com")
+//					.password("password"+i)
+//					.boards(new ArrayList<>())
+//					.build();
+//			userRepository.save(user);
+//		}
+//		for(int i=1;i<=100;++i) {
+//			UserBoardDto dto = UserBoardDto.builder()
+//					.writer("aaa"+i)
+//					.userEmail("aaa"+i+"@t.com")
+//					.password("password"+i)
+//					.title("Title"+i)
+//					.content("Content..."+i)
+//					.build();
+//
+//			Long created = boardService.createBoard(dto);
+//			System.out.println("Created board no is = " + created);
+//		}
+//	}
 
-			Long created = boardService.createBoard(dto);
-			System.out.println("Created board no is = " + created);
-		}
-	}
+//	@Test
+//	void selectBoardTest1(){
+//		UserBoardDto dto = boardService.selectBoard(1L );
+//		System.out.println(dto.toString());
+//	}
 
-	@Test
-	void selectBoardTest1(){
-		UserBoardDto dto = boardService.selectBoard(1L );
-		System.out.println(dto.toString());
-	}
+//	@Test
+//	void updateBoardTest1() {
+//		UserBoardDto dto = boardService.selectBoard(1L);
+//		System.out.println(dto.toString());
+//		dto.updateTitle("Update Title...!!!");
+//		dto.updateContent("Update Content...!!!");
+//		System.out.println(boardService.updateBoard(dto)+" ) updated!");
+//	}
 
-	@Test
-	void updateBoardTest1() {
-		UserBoardDto dto = boardService.selectBoard(1L);
-		System.out.println(dto.toString());
-		dto.updateTitle("Update Title...!!!");
-		dto.updateContent("Update Content...!!!");
-		System.out.println(boardService.updateBoard(dto)+" ) updated!");
-	}
-
-	@Test
-	void removeBoardTest1(){
-		UserBoardDto dto = boardService.selectBoard(1L );
-		Long rid = boardService.removeBoard(dto);
-		System.out.println("삭제 된 ID : "+rid);
-	}
-
-	@Test
-	@Transactional
-	void getBoardListTest() {
-		PageRequestDto requestDto = new PageRequestDto();
-		PageResponseDto<UserBoardDto, UserBoard> responseDto = boardService.getBoardList(requestDto);
-		System.out.println(responseDto.toString());
-		for(UserBoardDto dto : responseDto.getContent())
-			System.out.println(dto);
-		System.out.println("테스트 끝!");
-	}
+//	@Test
+//	void removeBoardTest1(){
+//		UserBoardDto dto = boardService.selectBoard(1L );
+//		Long rid = boardService.removeBoard(dto);
+//		System.out.println("삭제 된 ID : "+rid);
+//	}
+//
+//	@Test
+//	@Transactional
+//	void getBoardListTest() {
+//		PageRequestDto requestDto = new PageRequestDto();
+//		PageResponseDto<UserBoardDto, UserBoard> responseDto = boardService.getBoardList(requestDto);
+//		System.out.println(responseDto.toString());
+//		for(UserBoardDto dto : responseDto.getContent())
+//			System.out.println(dto);
+//		System.out.println("테스트 끝!");
+//	}
 
 //	@Transactional(readOnly = true)
-	@Test
-	public void searchTest() {
-		PageRequestDto pageRequestDto = new PageRequestDto();
-		//t, c, u
-		String tag = "u";
-		String txt = "aaa1";
-		PageResponseDto<UserBoardDto, UserBoard> boards = boardService.searchBoardWithCrit(tag, txt, pageRequestDto.getPageable(Sort.by("bno").descending()));
-		System.out.println(boards.getContent().size());
-		for(UserBoardDto dto : boards.getContent()) {
-			System.out.println(dto);
-		}
-	}
+//	@Test
+//	public void searchTest() {
+//		PageRequestDto pageRequestDto = new PageRequestDto();
+//		//t, c, u
+//		String tag = "";
+//		String txt = "";
+//		PageResponseDto<UserBoardDto, UserBoard> boards = boardService.searchBoardWithCrit(tag, txt, pageRequestDto.getPageable(Sort.by("bno").descending()));
+//		System.out.println(boards.getContent().size());
+//		for(UserBoardDto dto : boards.getContent()) {
+//			System.out.println(dto);
+//		}
+//	}
 
 	/*
 	@Test

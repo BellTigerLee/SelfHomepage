@@ -24,7 +24,7 @@ public interface BoardService {
 
     Long removeBoard(UserBoardDto removed);
     
-    PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable);
+//    private PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable);
 
     default UserBoardDto entityToDto(UserBoard board) {
         String date_form = "yyyy-MM-dd HH:mm:ss";

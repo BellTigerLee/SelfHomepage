@@ -1,5 +1,7 @@
 package ugps.myweb.gpsinside.Service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -14,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ugps.myweb.gpsinside.Dto.PageRequestDto;
 import ugps.myweb.gpsinside.Dto.PageResponseDto;
 import ugps.myweb.gpsinside.Dto.UserBoardDto;
+import ugps.myweb.gpsinside.Entity.QUserBoard;
 import ugps.myweb.gpsinside.Entity.RegistedUser;
 import ugps.myweb.gpsinside.Entity.UserBoard;
 import ugps.myweb.gpsinside.Repository.BoardRepository;
 import ugps.myweb.gpsinside.Repository.UserRepository;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +47,14 @@ public class BoardServiceImpl implements BoardService{
 //        return dtoPage;
 //    }
 
+    @Transactional(readOnly = true)
     @Override
     public PageResponseDto<UserBoardDto, UserBoard> getBoardList(PageRequestDto request) {
-        Page<UserBoard> daoList = boardRepository.findAll(request.getPageable(Sort.by("bno").descending()));
+        Pageable pageable = request.getPageable(Sort.by("bno").descending());
+        BooleanBuilder booleanBuilder = getSearchBuilder(request);
+
+        Page<UserBoard> daoList = boardRepository.findAll(booleanBuilder, pageable);
+
         return new PageResponseDto<>(daoList, function);
     }
 
@@ -101,53 +110,30 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
-    /**
-     *
-     * @param tag :
-     *  tag는 t:제목, c:내용, u: 작성자
-     *  types: tcu 저장
-     * @param txt 검색어
-     *  검색어를 입력
-     * rt : 포함검색을 위한 %검색어%
-     *
-     * @return
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public PageResponseDto<UserBoardDto, UserBoard> searchBoardWithCrit(String tag, String txt, Pageable pageable) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserBoard> cq = cb.createQuery(UserBoard.class);
-        Root<UserBoard> root = cq.from(UserBoard.class);
-        Join<UserBoard, RegistedUser> withUser = root.join("user");
 
-        List<Predicate> predicates = new ArrayList<>();
-        String rt = "%"+txt+"%";
 
-        String[] types = tag.split("");
-        for(String type : types) {
-            switch(type) {
-                case "t" :
-                    predicates.add(cb.like(root.get("title"), rt));
-                    break;
-                case "c":
-                    predicates.add(cb.like(root.get("content"), rt));
-                    break;
-                case "u":
-                    predicates.add(cb.like(withUser.get("name"), rt));
-                    break;
-            }
-        }
+    private BooleanBuilder getSearchBuilder(PageRequestDto requestDto) {
+        String rType = requestDto.getType();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        QUserBoard qUserBoard = QUserBoard.userBoard;
+        String rKey = requestDto.getKeyword();
 
-        cq.where(cb.or(predicates.toArray(new Predicate[0])));
-        cq.orderBy(cb.desc(root.get("bno")));
-        TypedQuery<UserBoard> exec = entityManager.createQuery(cq);
-        List<UserBoard> _boards = exec.setFirstResult((int)pageable.getOffset())
-                .setMaxResults(pageable.getPageSize()).getResultList();
+        BooleanExpression expression = qUserBoard.bno.gt(0L);
+        booleanBuilder.and(expression);
 
-        Page<UserBoard> boards = new PageImpl<>(_boards, pageable, pageable.getOffset());
-        return new PageResponseDto<>(boards, function);
+        if(rType == null || rType.trim().length() == 0) return booleanBuilder;
+
+        BooleanBuilder conditions = new BooleanBuilder();
+        if(rType.contains("t"))
+            conditions.or(qUserBoard.title.contains(rKey));
+        if(rType.contains("c"))
+            conditions.or(qUserBoard.content.contains(rKey));
+        if(rType.contains("u"))
+            conditions.or(qUserBoard.user.name.contains(rKey));
+        booleanBuilder.and(conditions);
+
+        return booleanBuilder;
     }
-
 
     private Function<UserBoard, UserBoardDto> function = (entity) -> entityToDto(entity);
 

@@ -11,21 +11,7 @@
 </head>
 
 <th:block layout:fragment="contents">
-<script th:inline="javascript">
-    console.log([[${relation.content}]])
-    console.log([[${relation.isPrev()}]], [[${relation.last}]])
-    let page_id = document.getElementById("page_id")
-    console.log(page_id)
-    let searchForm = $("#searchForm")
-    function search_keyword() {
-        searchForm.submit();
-        console.log("Search Btn Clicked!")
-    }
-    function clr_keyword() {
-        searchForm.empty().submit();
-        console.log("Clear btn Clicked!")
-    }
-</script>
+
     <h1>헬로우</h1>
     <a th:href="@{/b/post}">
         <button class="btn btn-outline-primary" type="button">글 등록</button>
@@ -51,24 +37,24 @@
     <nav aria-label="Pagination" th:if="${relation.totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${relation.prev}">
-                <a th:href="@{/b/main(page=${relation.start - 10}, size=${relation.size})}" th:text="prev"></a>
+                <a th:href="@{/b/main(page=${relation.start - 10}, size=${relation.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}" th:text="prev"></a>
             </li>
 
             <li class="page-item" th:each="pageNum : ${relation.pageList}">
-                <a th:href="@{/b/main(page = ${pageNum},size = ${relation.size})}"
+                <a th:href="@{/b/main(page = ${pageNum},size = ${relation.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}"
                    th:text="${pageNum}" th:class="${pageNum == relation.page} ? active"></a>
             </li>
 
             <li class="page-item" th:if="${relation.last}">
-                <a th:href="@{/b/main(page=${relation.end + 1}, size=${relation.size})}" th:text="next"></a>
+                <a th:href="@{/b/main(page=${relation.end + 1}, size=${relation.size}, type=${requestDto.type}, keyword=${requestDto.keyword})}" th:text="next"></a>
             </li>
         </ul>
     </nav>
 
-    <form id="searchForm" action="/b/main" method="get">
+    <form id="searchForm" role="form" action="/b/main" method="get">
         <input id="page" name="page" value="1" type="hidden"/>
         <input id="size" name="size" value="5" type="hidden"/>
-        <select name="type" class="form-control form-select w-25">
+        <select id="selectType" name="type" class="form-control form-select w-25">
             <option th:selected="${requestDto.type == null}">----</option>
             <option value="t" th:selected="${requestDto.type == 't'}">제목</option>
             <option value="c" th:selected="${requestDto.type == 'c'}">내용</option>
@@ -76,14 +62,39 @@
             <option value="tc" th:selected="${requestDto.type == 'tc'}">제목 + 내용</option>
             <option value="tcu" th:selected="${requestDto.type == 'tcu'}">제목 + 내용 + 닉네임</option>
         </select>
-        <input class="form-control" name="keyword" th:value="${requestDto.keyword}">
+        <input class="form-control" id="keyTxt" name="keyword" th:value="${requestDto.keyword}">
         <div class="input-group-lg" id="search-input">
-            <button type="button" class="btn btn-outline-info" onclick="search_keyword()">검색</button>
-            <button type="button" class="btn btn-outline-info" onclick="clr_keyword()">지우기</button>
+            <button type="button" class="btn btn-info btn-search">검색</button>
+            <button type="button" class="btn btn-outline-info" onclick="document.getElementById('keyTxt').value=''">지우기</button>
         </div>
     </form>
 
     <input id="page_sz" type="hidden" th:value="${size}">
+
+    <script th:inline="javascript">
+        console.log([[${relation.content}]])
+        console.log([[${relation.isPrev()}]], [[${relation.last}]])
+        let page_id = document.getElementById("page_id")
+        console.log(page_id)
+
+        $('.btn-search').click(e => {
+            console.log("Search Click!")
+            let stype = document.getElementById('selectType')
+            let sval = stype.options[stype.selectedIndex].value
+            if(sval !== '----') {
+                document.getElementById('searchForm').submit();
+            }
+            // console.log("before")
+            // searchForm.submit();
+            // console.log("after")
+        })
+        // function search_keyword() {
+        //     console.log(searchForm.dataset);
+        //     searchForm.submit();
+        //     console.log("Search Btn Clicked!")
+        // }
+
+    </script>
 </th:block>
 
 </html>
